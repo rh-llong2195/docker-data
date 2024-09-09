@@ -3,6 +3,7 @@ name: common
 services:
   redis:
     image: redis:latest
+    container_name: common-redis
     restart: always
     ports:
       - 6379:6379
@@ -13,6 +14,7 @@ services:
 
   mysql:
     image: mysql:latest
+    container_name: common-mysql
     restart: always
     ports:
       - 3306:3306
@@ -26,9 +28,22 @@ services:
     networks:
       - common
 
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 5000:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=localhost
+      - PMA_PASSWORD=password
+    networks:
+      - common
+
 volumes:
   redis_data:
   mysql_data:
+
 networks:
   common:
     name: common
