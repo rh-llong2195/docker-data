@@ -1,6 +1,20 @@
 name: common
 
 services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer_data:/data
+    ports:
+      - 9000:9000
+    networks:
+      - common
   redis:
     image: redis:latest
     container_name: redis
@@ -129,6 +143,7 @@ services:
       - common
 
 volumes:
+  portainer_data:
   redis_data:
   mysql_data:
   mysql_slave_data:
